@@ -34,3 +34,57 @@ Please complete Part 1–2 as described in the [Google Slides](https://docs.goog
     year      = {2024}
 }
 ```
+
+## Enviroment
+CUDA 12.6
+
+### install
+
+conda create -n ev_hw3 python=3.9
+conda activate ev_hw3
+
+pip install -r requirements.txt
+pip install torch==2.2.2+cu121 torchvision==0.17.2+cu121 torchaudio==2.2.2 --extra-index-url https://download.pytorch.org/whl/cu121
+pip install ninja
+
+pip install -e gaussian-splatting/submodules/diff-gaussian-rasterization/
+pip install -e gaussian-splatting/submodules/simple-knn/
+
+#### FFMPEG
+sudo apt update
+sudo apt install ffmpeg
+
+
+### Manual Fixes for Compatibility
+#### Required to compile with CUDA 12.x toolchain
+diff-gaussian-rasterization
+In gaussian-splatting/submodules/diff-gaussian-rasterization/cuda_rasterizer/rasterizer_impl.h, add the following at the top:
+```#include <cstdint>```
+
+simple-knn
+In gaussian-splatting/submodules/simple-knn/simple_knn.cu, add the following at the top:
+```#include <cfloat>```
+
+## Run Simulation for Jelly and Metal Material (baseline)
+
+### Run Jelly
+python gs_simulation.py \
+  --model_path ./model/ficus_whitebg-trained/ \
+  --output_path ./output/jelly_ficus \
+  --config ./config/ficus_config_jelly.json \
+  --render_img --compile_video --white_bg
+
+### Run Metal
+python gs_simulation.py \
+  --model_path ./model/ficus_whitebg-trained/ \
+  --output_path ./output/metal_ficus \
+  --config ./config/ficus_config_metal.json \
+  --render_img --compile_video --white_bg
+
+
+## Run Simulation for Jelly and Metal for Other Params
+python gs_simulation.py \
+  --model_path ./model/ficus_whitebg-trained/ \
+  --output_path ./output/metal_ficus \
+  --config ./config/ficus_config_metal.json \
+  --render_img --compile_video --white_bg
