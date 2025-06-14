@@ -102,7 +102,7 @@ python calc_psnr.py --ref_dir output/jelly_ficus_base --test_dir output/jelly_fi
 
 FULL EXPERIMENTS PLAYLIST : [▶️ Playlist](https://www.youtube.com/playlist?list=PLKdM4OqX00sFmwXJuu9Fd5ESgvOluWfFy)
 
-## 🔍 Part 2 Analysis: Ablation Study & Observations
+## Discussion & Observations
 
 Across different parameter variations (e.g., `substep_dt`, `grid_lim`, `n_grid`), we observed that:
 

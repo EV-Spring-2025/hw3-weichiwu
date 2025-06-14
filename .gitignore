@@ -176,3 +176,4 @@ demo/
 model/
 gaussian-splatting/
 *.png
+output/.DS_Store
