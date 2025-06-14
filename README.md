@@ -65,16 +65,16 @@ simple-knn
 In gaussian-splatting/submodules/simple-knn/simple_knn.cu, add the following at the top:
 ```#include <cfloat>```
 
-## Run Simulation for Jelly and Metal Material (baseline)
+## Part1: Run Simulation for Jelly and Metal Material (baseline)
 
-### Run Jelly
+### Run Jelly (Baseline)
 python gs_simulation.py \
   --model_path ./model/ficus_whitebg-trained/ \
   --output_path ./output/jelly_ficus \
   --config ./config/ficus_config_jelly.json \
   --render_img --compile_video --white_bg
 
-### Run Metal
+### Run Metal (Baseline)
 python gs_simulation.py \
   --model_path ./model/ficus_whitebg-trained/ \
   --output_path ./output/metal_ficus \
@@ -82,9 +82,31 @@ python gs_simulation.py \
   --render_img --compile_video --white_bg
 
 
-## Run Simulation for Jelly and Metal for Other Params
+## Part 2: Parameter Adjustment (e.g., soften=0 for Jelly)
+
+### Run Jelly (soften=0)
 python gs_simulation.py \
   --model_path ./model/ficus_whitebg-trained/ \
-  --output_path ./output/metal_ficus \
-  --config ./config/ficus_config_metal.json \
+  --output_path ./output/jelly_ficus_soften0 \
+  --config ./config/ficus_config_jelly_soften0.json \
   --render_img --compile_video --white_bg
+
+### PSNR Evaluation (e.g., soften=0 vs baseline)
+python calc_psnr.py --ref_dir output/jelly_ficus_base --test_dir output/jelly_ficus_soften0
+
+
+### 📊 PSNR Results Summary
+
+| Experiment # | Parameter Setting              | Avg. PSNR | Notes                                             |
+|--------------|--------------------------------|-----------|---------------------------------------------------|
+| 1            | softening=0.1 (default)        | -         | Baseline configuration                           |
+| 2            | softening=0.0                  | 76.17     | Very similar to base                             |
+| 3            | softening=0.5                  | 76.49     | No visible difference from base                  |
+| 4            | softening=1.0                  | 76.54     | Same as above, softening has no effect on jelly  |
+| 5            | substep_dt=5e-5                | 22.08     | Clear deformation, strong visual difference      |
+| 6            | substep_dt=5e-4                | -         | Simulation failed due to Out-of-Memory (OOM)     |
+| 7            | grid_lim=1.0                   | -         | Simulation failed due to Out-of-Memory (OOM)     |
+| 8            | grid_lim=3.0                   | 21.92     | More spread out deformation, low PSNR            |
+| 8            | ngrid=25                       | 21.96     | More spread out deformation, low PSNR            |
+| 8            | ngrid=75                       | -         | Simulation failed due to Out-of-Memory (OOM)     |
+| 8            | substep_dt=5e-5, ngrid=75      | 21.97     | More spread out deformation, low PSNR            |

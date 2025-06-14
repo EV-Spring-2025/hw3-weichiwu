@@ -2,7 +2,7 @@
     "opacity_threshold": 0.02,
     "rotation_degree": [0.0],
     "rotation_axis": [0],
-    "substep_dt": 5e-5,
+    "substep_dt": 1e-4,
     "frame_dt": 4e-2,
     "frame_num": 125,
     "nu": 0.4,
@@ -12,9 +12,9 @@
     "g": [0,0,0],
     "grid_v_damping_scale": 0.9999,
 
-    "n_grid":               75,
+    "n_grid":               50,
     "grid_lim":             2.0,
-    "softening":            0.1,
+    "softening":            0.5,
 
     "rpic_damping": 0.0,
     "boundary_conditions": [
